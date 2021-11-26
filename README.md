@@ -63,11 +63,15 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 | material  |
 | equipment  |
 
+
+
 | Equipment |
 | ------------ |
 | weapon  |
 | helmet  |
 | chestplate  |
+
+
 
 | Add stat |
 | ------------ |
@@ -120,7 +124,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "slot": "helmet",
     "add": {
         "armor": 4,
-		"health_max": 30
+	"health_max": 30
     }
 }
 ```
@@ -137,7 +141,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "slot": "chestplate",
     "add": {
         "armor": 8,
-		"health_max": 60
+	"health_max": 60
     }
 }
 ```
@@ -163,24 +167,24 @@ To create an enemy you must create a .json in **./discord-dungeon/enemies**.
 {
     "id": 1,
     "name": "Slime",
-    "zone": "Cave",
-    "stage": 1,
+    "zone": "Cave", // Spawning area;
+    "stage": 1, // Stage where it spawns;
     "health": 5,
     "damage": 1,
     "armor": 1,
-    "money": [100, 200], // [min, max] or 100 (fixed quantity)
-    "xp": [2, 5], // [min, max] or 2 (fixed quantity),
+    "money": [100, 200], // Array:[min, max] or Number;
+    "xp": [2, 5], // Array:[min, max] or Number;
     "rarity": "common",
     "drop": {
-        "100": { // 100 percent
-            "1": [5, 7] //Item id 1; [min, max] or 6 (fixed quantity)
+        "100": { // 100 percent;
+        	"1": [5, 7] //Item id 1; Array:[min, max] or Number;
         },
-        "50": { // 50 percent
-            "2": [7, 8] //Item id 1; [min, max] or 6 (fixed quantity)
+        "50": { // 50 percent;
+        	"2": [7, 8] //Item id 1; Array:[min, max] or Number;
         },
-		"31": { // 32 percent; etc...
-			"3": 1 //Item id 1; [min, max] or 6 (fixed quantity)
-		}
+	"32": { // 32 percent; etc...
+		"3": 1 //Item id 1; Array:[min, max] or Number;
+	}
     }
 }
 ```
@@ -235,7 +239,7 @@ const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
 
 const player = new Players.Player('<DISCORD-ID>')
-player.GetBag().then(bag => console.log(bag))
+player.GetBag(<Sort type>).then(bag => console.log(bag))
 ```
 
 ### Add-money
