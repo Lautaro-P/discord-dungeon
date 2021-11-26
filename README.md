@@ -5,7 +5,7 @@
 	* [Create item](#Create-item)
 		* [Quality](#Quality)
 		* [Type Items](#Type)
-		* [Examples items](#Examples)
+		* [Examples items](#Examples-items)
 			* [Material](#Material)
 			* [Weapon](#Weapon)
 			* [Helmet](#Helmet)
