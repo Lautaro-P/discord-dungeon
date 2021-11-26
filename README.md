@@ -1,7 +1,7 @@
 # Discord-Dungeon
 
 * [Initialization](#Initialization)
-	* [Connect MongoDB](#Connect MongoDB)
+	* [Connect MongoDB](#ConnectMongoDB)
 	* [Create item](#Create item)
 		* [Quality](#Quality)
 		* [Type Items](#Type)
