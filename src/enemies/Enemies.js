@@ -160,7 +160,7 @@ class Enemy {
 }
 
 
-class enemies {
+class Enemies {
     
     /**
      * Get the enemy by ID
@@ -259,4 +259,4 @@ class enemies {
     }
 }
 
-module.exports = { enemies }
+module.exports = { Enemies }
