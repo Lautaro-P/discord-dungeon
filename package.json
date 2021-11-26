@@ -1,15 +1,29 @@
 {
   "name": "discord-dungeon",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Add inventories, enemies, and items to your Discord bot.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["discord", "dungeon", "dicord-bot", "bot"],
+  "keywords": [
+    "discord",
+    "dungeon",
+    "dicord-bot",
+    "bot"
+  ],
   "author": "Lechu",
   "license": "ISC",
   "dependencies": {
     "mongoose": "^6.0.12"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lechugh/discord-dungeon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Lechugh/discord-dungeon/issues"
+  },
+  "homepage": "https://github.com/Lechugh/discord-dungeon#readme"
 }
