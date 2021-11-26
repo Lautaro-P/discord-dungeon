@@ -1,5 +1,43 @@
 # Discord-Dungeon
 
+* [Initialization](#Initialization)
+	* [Connect MongoDB](#Connect MongoDB)
+	* [Create item](#Create item)
+		* [Quality](#Quality)
+		* [Type Items](#Type)
+		* [Examples items](#Examples)
+			* [Material](#Material)
+			* [Weapon](#Weapon)
+			* [Helmet](#Helmet)
+			* [Chestplate](#Chestplate)
+	* [Create enemy](#Create enemy)
+		* [Rarity enemy](#Rarity enemy)
+		* [Examples enemies](#Examples enemies)
+			* [Slime](#Slime)
+* [Players](#Players)
+	* [Add item](#Add Item)
+	* [Remove item](#Remove Item)
+	* [Set item](#Set Item)
+	* [Find Item in bag](#Find Item in bag)
+	* [Get bag](#Get bag)
+	* [Add money](#Add money)
+	* [Remove money](#Remove money)
+	* [Set money](#Set money)
+	* [Get stats](#Get stats)
+	* [Equip item](#Equip item)
+* [Enemies](#Enemies)
+	* [Get enemy with id](#Get enemy with id)
+	* [Get enemy with name](#Get enemy with name)
+	* [Get a random enemy from a stage and zone](#Get a random enemy from a stage and zone)
+	* [Enemy](#Enemy)
+		* [Get random drop](#Get random drop)
+* [Items](#Items)
+	* [Get item with id](#Get item with id)
+	* [Get item with name](#Get item with name)
+	* [Get all items](#Get all items)
+
+------------
+
 ## Initialization
 ### Connect MongoDB
 ```js
