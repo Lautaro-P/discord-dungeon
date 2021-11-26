@@ -1,7 +1,7 @@
 # Discord-Dungeon
 
 * [Initialization](#Initialization)
-	* [Connect MongoDB](#ConnectMongoDB)
+	* [Connect MongoDB](#Connect-MongoDB)
 	* [Create item](#Create item)
 		* [Quality](#Quality)
 		* [Type Items](#Type)
@@ -12,39 +12,39 @@
 			* [Chestplate](#Chestplate)
 	* [Create enemy](#Create enemy)
 		* [Rarity enemy](#Rarity enemy)
-		* [Examples enemies](#Examples enemies)
+		* [Examples enemies](#Examples-enemies)
 			* [Slime](#Slime)
 * [Players](#Players)
-	* [Add item](#Add Item)
-	* [Remove item](#Remove Item)
-	* [Set item](#Set Item)
-	* [Find Item in bag](#Find Item in bag)
-	* [Get bag](#Get bag)
-	* [Add money](#Add money)
-	* [Remove money](#Remove money)
-	* [Set money](#Set money)
-	* [Get stats](#Get stats)
-	* [Equip item](#Equip item)
+	* [Add item](#Add-Item)
+	* [Remove item](#Remove-Item)
+	* [Set item](#Set-Item)
+	* [Find Item in bag](#Find-Item-in-bag)
+	* [Get bag](#Get-bag)
+	* [Add money](#Add-money)
+	* [Remove money](#Remove-money)
+	* [Set money](#Set-money)
+	* [Get stats](#Get-stats)
+	* [Equip item](#Equip-item)
 * [Enemies](#Enemies)
-	* [Get enemy with id](#Get enemy with id)
-	* [Get enemy with name](#Get enemy with name)
-	* [Get a random enemy from a stage and zone](#Get a random enemy from a stage and zone)
+	* [Get enemy with id](#Get-enemy-with-id)
+	* [Get enemy with name](#Get-enemy-with-name)
+	* [Get a random enemy from a stage and zone](#Get-a-random-enemy-from-a-stage-and-zone)
 	* [Enemy](#Enemy)
-		* [Get random drop](#Get random drop)
+		* [Get random drop](#Get-random-drop)
 * [Items](#Items)
-	* [Get item with id](#Get item with id)
-	* [Get item with name](#Get item with name)
-	* [Get all items](#Get all items)
+	* [Get item with id](#Get-item-with-id)
+	* [Get item with name](#Get-item-with-name)
+	* [Get all items](#Get-all-items)
 
 ------------
 
 ## Initialization
-### Connect MongoDB
+### Connect-MongoDB
 ```js
 const {Dungeon} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
 ```
-#### Create item
+#### Create-item
 To create an item you must create a .json in **./discord-dungeon/items**.
 
 ##### Quality
@@ -75,7 +75,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 | damage  |
 | armor  |
 
-#### Examples items
+#### Examples-items
 
 ##### Material
 ```json
@@ -142,10 +142,10 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 }
 ```
 
-#### Create enemy
+#### Create-enemy
 To create an enemy you must create a .json in **./discord-dungeon/enemies**.
 
-##### Rarity enemy
+##### Rarity-enemy
 | Rarity | Percentage |
 | ------------ | ------------ |
 | common  | 100  |
@@ -155,7 +155,7 @@ To create an enemy you must create a .json in **./discord-dungeon/enemies**.
 | very_rare  | 6  |
 | mythical  | 2  |
 
-#### Examples enemies
+#### Examples-enemies
 
 ##### Slime
 
@@ -187,7 +187,7 @@ To create an enemy you must create a .json in **./discord-dungeon/enemies**.
 
 ## Players
 
-### Add Item
+### Add-Item
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -196,7 +196,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.AddItem(<Item id or name>, <amount>)
 ```
 
-### Remove Item
+### Remove-Item
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -205,7 +205,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.RemoveItem(<Item id or name>, <amount>)
 ```
 
-### Set Item
+### Set-Item
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -214,7 +214,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.SetItem(<Item id or name>, <amount>)
 ```
 
-### Find Item in bag
+### Find-Item-in-bag
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -223,7 +223,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.FindItem(<Item id or name>).then(item => console.log(item))
 ```
 
-### Get bag
+### Get-bag
 | Sort type  |
 | ------------ |
 | none  |
@@ -238,7 +238,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.GetBag().then(bag => console.log(bag))
 ```
 
-### Add money
+### Add-money
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -247,7 +247,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.AddMoney(<Amount>)
 ```
 
-### Remove money
+### Remove-money
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -256,7 +256,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.RemoveMoney(<Amount>)
 ```
 
-### Set money
+### Set-money
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -265,7 +265,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.SetMoney(<Amount>)
 ```
 
-### Get stats
+### Get-stats
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -274,7 +274,7 @@ const player = new Players.Player('<DISCORD-ID>')
 player.GetStats().then(stats => console.log(stats))
 ```
 
-### Equip item
+### Equip-item
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -285,7 +285,7 @@ player.EquipItem(<Item equipment id or name>)
 
 ## Enemies
 
-### Get enemy with id
+### Get-enemy-with-id
 ```js
 const {Dungeon, Bestiary} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -293,7 +293,7 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 const enemy = Bestiary.Enemies.GetEnemyWithID(<Enemy id>)
 ```
 
-### Get enemy with name
+### Get-enemy-with-name
 ```js
 const {Dungeon, Bestiary} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -301,7 +301,7 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 const enemy = Bestiary.Enemies.GetEnemyWithName(<Enemy name>)
 ```
 
-### Get a random enemy from a stage and zone
+### Get-a-random-enemy-from-a-stage-and-zone
 ```js
 const {Dungeon, Bestiary} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -311,7 +311,7 @@ const enemy = Bestiary.Enemies.GetRandomEnemy(<Zone>, <Stage>)
 
 ### Enemy
 
-#### Get random drop
+#### Get-random-drop
 ```js
 const {Dungeon, Bestiary} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -330,7 +330,7 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 const enemy = Dictionary.Items.GetItemWithID(<Item id>)
 ```
 
-### Get item with name
+### Get-item-with-name
 ```js
 const {Dungeon, Dictionary} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
@@ -338,7 +338,7 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 const enemy = Dictionary.Items.GetItemWithName(<Item name>)
 ```
 
-### Get all items
+### Get-all-items
 | Sort type  |
 | ------------ |
 | alphabet  |
