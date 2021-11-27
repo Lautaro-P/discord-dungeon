@@ -180,10 +180,10 @@ To create an enemy you must create a .json in **./discord-dungeon/enemies**.
         	"1": [5, 7] //Item id 1; Array:[min, max] or Number;
         },
         "50": { // 50 percent;
-        	"2": [7, 8] //Item id 1; Array:[min, max] or Number;
+        	"2": [7, 8] //Item id 2; Array:[min, max] or Number;
         },
 	"32": { // 32 percent; etc...
-		"3": 1 //Item id 1; Array:[min, max] or Number;
+		"3": 1 //Item id 3; Array:[min, max] or Number;
 	}
     }
 }
