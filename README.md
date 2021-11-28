@@ -10,6 +10,7 @@
 			* [Weapon](#Weapon)
 			* [Helmet](#Helmet)
 			* [Chestplate](#Chestplate)
+            * [Craftable](#Craftable)
 	* [Create enemy](#Create-enemy)
 		* [Rarity enemy](#Rarity-enemy)
 		* [Examples enemies](#Examples-enemies)
@@ -23,8 +24,11 @@
 	* [Add money](#Add-money)
 	* [Remove money](#Remove-money)
 	* [Set money](#Set-money)
+    * [Add health](#Add-health)
+    * [Take damage](#Take-damage)
 	* [Get stats](#Get-stats)
 	* [Equip item](#Equip-item)
+    * [Craft item](#Craft-item)
 * [Enemies](#Enemies)
 	* [Get enemy with id](#Get-enemy-with-id)
 	* [Get enemy with name](#Get-enemy-with-name)
@@ -73,7 +77,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 
 
 
-| Add stat |
+| Add or remove stat |
 | ------------ |
 | health_max  |
 | damage  |
@@ -97,7 +101,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 ```js
 {
     "id": 2,
-    "name": "Sword",
+    "name": "Iron Sword",
     "sellable": true,
     "price": 2000,
     "quality": 2,
@@ -133,7 +137,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 ```js
 {
     "id": 4,
-    "name": "Chestplate helmet",
+    "name": "Iron Chestplate",
     "sellable": true,
     "price": 3500,
     "quality": 3,
@@ -142,6 +146,29 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "add": {
         "armor": 8,
 	"health_max": 60
+    }
+}
+```
+
+##### Craftable
+Need 8 Wood(ID = 1) for craft this item.
+```js
+{
+    "id": 5,
+    "name": "Wooden Chestplate",
+    "sellable": true,
+    "price": 3500,
+    "quality": 3,
+    "type": "equipment",
+    "slot": "chestplate",
+    "add": {
+        "armor": 2,
+	    "health_max": 20
+    }
+    "craftable": true
+    "craft": {
+        "1": 8
+        // "ID": <amount>
     }
 }
 ```
@@ -269,6 +296,25 @@ const player = new Players.Player('<DISCORD-ID>')
 player.SetMoney(<Amount>)
 ```
 
+### Add-health
+```js
+const {Dungeon, Players} = require('discord-dungeon')
+const client = new Dungeon.Client('<MONGODB-URL>')
+
+const player = new Players.Player('<DISCORD-ID>')
+player.AddHealth(<Amount>, <true or false>) // true=add to health_max, false=add to health, Default: false
+```
+
+### Take-damage
+If the player receives mortal damage he will revive with half the items, money and health.
+```js
+const {Dungeon, Players} = require('discord-dungeon')
+const client = new Dungeon.Client('<MONGODB-URL>')
+
+const player = new Players.Player('<DISCORD-ID>')
+player.TakeDamage(<amount>)
+```
+
 ### Get-stats
 ```js
 const {Dungeon, Players} = require('discord-dungeon')
@@ -284,7 +330,16 @@ const {Dungeon, Players} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
 
 const player = new Players.Player('<DISCORD-ID>')
-player.EquipItem(<Item equipment id or name>)
+player.EquipItem(<Item id or name>)
+```
+
+### Craft-item
+```js
+const {Dungeon, Players} = require('discord-dungeon')
+const client = new Dungeon.Client('<MONGODB-URL>')
+
+const player = new Players.Player('<DISCORD-ID>')
+player.CraftItem(<Item id or name>, <amount>)
 ```
 
 ## Enemies

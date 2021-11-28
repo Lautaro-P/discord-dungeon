@@ -69,7 +69,7 @@ for (const _item of items) {
                 }
             }
         }
-        if(item.crafteable === true) {
+        if(item.craftable === true) {
             if (!item.craft) {
                 const err = new Error(`Invalid item craft. ${_item}`)
                 throw err;
@@ -131,7 +131,7 @@ class Item {
             this.add = data.add
             this.remove = data.remove
         }
-        if (data.crafteable === true) {
+        if (data.craftable === true) {
             this.craft = data.craft
         }
     }

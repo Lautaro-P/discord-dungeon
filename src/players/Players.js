@@ -1,4 +1,4 @@
-const { Dictionary }= require('../index')
+const { Dictionary, Players }= require('../index')
 const PlayerSchema = require('../Schemas/Player')
 
 /**
@@ -354,6 +354,89 @@ class Player {
         return true 
     }
 
+    /**
+     * Add health to the player
+     * @param {number} amount
+     * @param {boolean} maxhealth
+     * @returns {boolean}
+     */
+    async AddHealth(amount=1, maxhealth=false) {
+        let player = await PlayerSchema.findOne({id: this.playerid})
+        if (!player) {
+            let p = new PlayerSchema({id: this.playerid})
+            await p.save()
+            player = p
+        }
+
+        if(Number(amount) < 1) {
+            const err = new Error('The amount cannot be negative')
+            return err;
+        }
+
+        let json = player.health
+
+        if (maxhealth) {
+            json = player.health_max
+        }
+
+        json += parseInt(amount)
+        
+        if (!maxhealth) {
+            await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health: json}).catch(err => {
+                return err
+            })
+            return true 
+        }
+        else {
+            await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health_max: json}).catch(err => {
+                return err
+            })
+            return true 
+        }
+    }
+
+    /**
+     * Remove health to the player
+     * @param {number} amount
+     * @param {boolean} maxhealth
+     * @returns {boolean} True = alive, False = revive with halfs items, money and health
+     */
+    async TakeDamage(amount=1) {
+        let player = await PlayerSchema.findOne({id: this.playerid})
+        if (!player) {
+            let p = new PlayerSchema({id: this.playerid})
+            await p.save()
+            player = p
+        }
+
+        if(Number(amount) < 1) {
+            const err = new Error('The amount cannot be negative')
+            return err;
+        }
+
+        let json = player.health
+
+        json -= parseInt(amount) * (100 / (100+player.armor))
+
+        if (json < 1) {
+            for (const id in player.bag) {
+                player.bag[`${id}`] = Math.ceil(player.bag[`${id}`] / 2)
+            }
+            await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health: json, bag: player.bag, money: Math.ceil(player.money / 2), health: Math.ceil(player.health / 2)}).catch(err => {
+                return err
+            })
+            return false
+        }
+        
+        await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health: json}).catch(err => {
+            return err
+        })
+        return true
+    }
+
+    /**
+     * Get player stats
+     */
     async GetStats() {
         let player = await PlayerSchema.findOne({id: this.playerid})
             if (!player) {
@@ -364,6 +447,10 @@ class Player {
         return player
     }
 
+    /**
+     * Equip item
+     * @param {number | string} itemid
+     */
     async EquipItem(itemid) {
         let player = await PlayerSchema.findOne({id: this.playerid})
         if (!player) {
@@ -438,6 +525,80 @@ class Player {
             return err
         })
         return true 
+    }
+
+    /**
+     * Craft item
+     * @param {number | string} itemid
+     * @param {number} amount
+     */
+    async CraftItem(itemid, amount=1) {
+        let player = await PlayerSchema.findOne({id: this.playerid})
+        if (!player) {
+            let p = new PlayerSchema({id: this.playerid})
+            await p.save()
+            player = p
+        }
+        
+        let _itemid = itemid
+        if (typeof itemid === 'string') {
+            _itemid = Dictionary.Items.GetItemWithID(itemid).id
+        }
+        let item = Dictionary.Items.GetItemWithID(_itemid)
+
+        if (!item.craftable) {
+            const err = new Error('Item not craftable.')
+            return err;
+        }
+
+        for (const id in item.craft) {
+            if (!player.bag[`${id}`]) {
+                const err = new Error('The player does not have that item.')
+                return err;
+            }
+            if (player.bag[`${id}`] >= Math.round(item.craft[`${id}`] * amount)) {
+                const err = new Error('The player does not have that amount of item.')
+                return err;
+            }
+        }
+        for (const id in item.craft) {
+            await this.RemoveItem(id, Math.round(item.craft[`${id}`] * amount))
+        }
+        await this.AddItem(item.id, amount)
+        return true
+    }
+
+    /**
+     * Sell item
+     * @param {number | string} itemid
+     * @param {number} amount
+     */
+    async SellItem(itemid, amount=1) {
+        let player = await PlayerSchema.findOne({id: this.playerid})
+        if (!player) {
+            let p = new PlayerSchema({id: this.playerid})
+            await p.save()
+            player = p
+        }
+        
+        let _itemid = itemid
+        if (typeof itemid === 'string') {
+            _itemid = Dictionary.Items.GetItemWithID(itemid).id
+        }
+        let item = Dictionary.Items.GetItemWithID(_itemid)
+
+        if (!item.sellable) {
+            const err = new Error('Item not sellable.')
+            return err;
+        }
+
+        if (player.bag[`${item.id}`] < amount) {
+            const err = new Error('The player does not have that amount of item.')
+            return err;
+        }
+        await this.AddMoney(Math.round(item.price*amount))
+        await this.RemoveItem(item.id, amount)
+        return true
     }
 }
 
