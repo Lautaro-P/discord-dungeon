@@ -39,7 +39,7 @@ for (const _enemy of enemies) {
         const err = new Error(`Invalid enemy damage. ${_enemy}`)
         throw err;
     }
-    if (!enemy.armor || isNaN(enemy.armor) || Number(enemy.armor) <= 0) {
+    if (!enemy.armor || isNaN(enemy.armor) || Number(enemy.armor) <= -1) {
         const err = new Error(`Invalid enemy armor. ${_enemy}`)
         throw err;
     }
