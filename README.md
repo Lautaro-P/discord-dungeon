@@ -53,7 +53,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 
 ##### Quality
 | Quality |
-| ------------ | ------------ |
+| ------------ |
 | Common  |
 | Uncommon  |
 | Special  |
