@@ -28,7 +28,7 @@ for (const _item of items) {
             throw err;
         }
     }
-    if (!item.quality || isNaN(item.quality) || ![0,1,2,3,4,5].includes(Number(item.quality))) {
+    if (!item.quality || !['common', 'uncommon', 'special', 'rare', 'very_rare', 'mythical'].includes(item.quality)) {
         const err = new Error(`Invalid item quality. ${_item}`)
         throw err;
     }

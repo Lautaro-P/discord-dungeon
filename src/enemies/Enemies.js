@@ -71,7 +71,7 @@ for (const _enemy of enemies) {
             }
         }
     }
-    if (!['common', 'uncommon', 'special', 'rare', 'very_rare', 'mythical'].includes(enemy.rarity)) {
+    if (!enemy.rarity || !['common', 'uncommon', 'special', 'rare', 'very_rare', 'mythical'].includes(enemy.rarity)) {
         const err = new Error(`Invalid enemy rarity. ${_enemy}`)
         throw err;
     }

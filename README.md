@@ -52,14 +52,14 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 To create an item you must create a .json in **./discord-dungeon/items**.
 
 ##### Quality
-| Number  | Quality |
+| Quality |
 | ------------ | ------------ |
-| 0  | Common  |
-| 1  | Uncommon  |
-| 2  | Special  |
-| 3  | Rare  |
-| 4  | Very Rare  |
-| 5  | Mythical   |
+| Common  |
+| Uncommon  |
+| Special  |
+| Rare  |
+| Very Rare  |
+| Mythical   |
 
 ##### Type Items
 | Type |

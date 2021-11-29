@@ -1,0 +1,8 @@
+{
+    "id": 2,
+    "name": "Bone",
+    "sellable": true,
+    "price": 10,
+    "quality": "common",
+    "type": "material"
+}
