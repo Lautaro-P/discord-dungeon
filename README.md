@@ -54,12 +54,12 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 ##### Quality
 | Quality |
 | ------------ |
-| Common  |
-| Uncommon  |
-| Special  |
-| Rare  |
-| Very Rare  |
-| Mythical   |
+| common  |
+| uncommon  |
+| special  |
+| rare  |
+| very_rare  |
+| mythical   |
 
 ##### Type Items
 | Type |
@@ -92,7 +92,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "name": "Wood",
     "sellable": true,
     "price": 100,
-    "quality": 0,
+    "quality": "common",
     "type": "material"
 }
 ```
@@ -104,7 +104,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "name": "Iron Sword",
     "sellable": true,
     "price": 2000,
-    "quality": 2,
+    "quality": "special",
     "type": "equipment",
     "slot": "weapon",
     "add": {
@@ -123,7 +123,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "name": "Iron helmet",
     "sellable": true,
     "price": 1500,
-    "quality": 1,
+    "quality": "uncommon",
     "type": "equipment",
     "slot": "helmet",
     "add": {
@@ -140,7 +140,7 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "name": "Iron Chestplate",
     "sellable": true,
     "price": 3500,
-    "quality": 3,
+    "quality": "rare",
     "type": "equipment",
     "slot": "chestplate",
     "add": {
