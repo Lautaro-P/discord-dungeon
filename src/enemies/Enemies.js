@@ -23,7 +23,7 @@ for (const _enemy of enemies) {
         const err = new Error(`Invalid enemy name. ${_enemy}`)
         throw err;
     }
-    if (!enemy.health || isNaN(enemy.health) || Number(enemy.health) <= 0) {
+    if (isNaN(enemy.health) || Number(enemy.health) <= 0) {
         const err = new Error(`Invalid enemy health. ${_enemy}`)
         throw err;
     }
@@ -31,15 +31,15 @@ for (const _enemy of enemies) {
         const err = new Error(`Invalid enemy zone. ${_enemy}`)
         throw err;
     }
-    if (!enemy.stage || isNaN(enemy.stage) || Number(enemy.stage) <= 0 || !Number.isInteger(Number(enemy.stage))) {
+    if (isNaN(enemy.stage) || Number(enemy.stage) <= 0 || !Number.isInteger(Number(enemy.stage))) {
         const err = new Error(`Invalid enemy stage. ${_enemy}`)
         throw err;
     }
-    if (!enemy.damage || isNaN(enemy.damage) || Number(enemy.damage) <= 0) {
+    if (isNaN(enemy.damage) || Number(enemy.damage) <= 0) {
         const err = new Error(`Invalid enemy damage. ${_enemy}`)
         throw err;
     }
-    if (!enemy.armor || isNaN(enemy.armor) || Number(enemy.armor) <= -1) {
+    if (isNaN(enemy.armor) || Number(enemy.armor) < 0) {
         const err = new Error(`Invalid enemy armor. ${_enemy}`)
         throw err;
     }

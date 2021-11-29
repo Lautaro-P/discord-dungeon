@@ -14,7 +14,7 @@ let names = []
 
 for (const _item of items) {
     const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-    if (!item.id || isNaN(item.id) || Number(item.id) <= -1 || !Number.isInteger(Number(item.id))) {
+    if (isNaN(item.id) || Number(item.id) <= -1 || !Number.isInteger(Number(item.id))) {
         const err = new Error(`Invalid item id. ${_item}`)
         throw err;
     }
