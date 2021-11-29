@@ -1,4 +1,4 @@
-const { Dictionary, Players }= require('../index')
+const { Items }= require('../items/Items')
 const PlayerSchema = require('../Schemas/Player')
 
 /**
@@ -38,7 +38,7 @@ class Player {
             const err = new Error("Null item id or name")
             return err;
         }
-        if (!Dictionary.Items.GetItemWithName(item, false) && !Dictionary.Items.GetItemWithID(item, false)) {
+        if (!Items.GetItemWithName(item, false) && !Items.GetItemWithID(item, false)) {
             const err = new Error('Item not found')
             return err
         }
@@ -55,7 +55,7 @@ class Player {
 
         let itemname = item
         if (typeof item === 'string') {
-            itemname = Dictionary.Items.GetItemWithID(item).id
+            itemname = Items.GetItemWithID(item).id
         }
 
         if(!json) json = {}
@@ -86,7 +86,7 @@ class Player {
             const err = new Error("Null item id or name") 
             return err;
         }
-        if (!Dictionary.Items.GetItemWithName(item, false) && !Dictionary.Items.GetItemWithID(item, false)) {
+        if (!Items.GetItemWithName(item, false) && !Items.GetItemWithID(item, false)) {
             const err = new Error('Item not found')
             return err
         }
@@ -103,7 +103,7 @@ class Player {
 
         let itemname = item
         if (typeof item === 'string') {
-            itemname = Dictionary.Items.GetItemWithID(item).id
+            itemname = Items.GetItemWithID(item).id
         }
 
         if(!json) json = {}
@@ -155,7 +155,7 @@ class Player {
             const err = new Error("Null item id or name") 
             return err;
         }
-        if (!Dictionary.Items.GetItemWithName(item, false) && !Dictionary.Items.GetItemWithID(item, false)) {
+        if (!Items.GetItemWithName(item, false) && !Items.GetItemWithID(item, false)) {
             const err = new Error('Item not found')
             return err
         }
@@ -171,7 +171,7 @@ class Player {
 
         let itemname = item
         if (typeof item === 'string') {
-            itemname = Dictionary.Items.GetItemWithID(item).id
+            itemname = Items.GetItemWithID(item).id
         }
 
         if(!json) json = {}
@@ -200,7 +200,7 @@ class Player {
             const err = new Error("Null item id or name") 
             return err;
         }
-        if (!Dictionary.Items.GetItemWithName(item, false) && !Dictionary.Items.GetItemWithID(item, false)) {
+        if (!Items.GetItemWithName(item, false) && !Items.GetItemWithID(item, false)) {
             const err = new Error("Item not found") 
             return err;
         }
@@ -209,10 +209,10 @@ class Player {
 
         let itemname = item
         if (typeof item === 'string') {
-            itemname = Dictionary.Items.GetItemWithID(item).id
+            itemname = Items.GetItemWithID(item).id
         }
 
-        const Item = Dictionary.Items.GetItemWithID(itemname)
+        const Item = Items.GetItemWithID(itemname)
 
         if(!json[`${itemname}`]) {
             return false
@@ -248,8 +248,8 @@ class Player {
 
         let items = []
         for (const itemid in json) {
-            if (Dictionary.Items.GetItemWithID(parseInt(itemid))) {
-                items.push({Item: Dictionary.Items.GetItemWithID(parseInt(itemid)), amount:json[`${itemid}`]})
+            if (Items.GetItemWithID(parseInt(itemid))) {
+                items.push({Item: Items.GetItemWithID(parseInt(itemid)), amount:json[`${itemid}`]})
             }
         }
         if (sort === 'amount') {
@@ -467,11 +467,11 @@ class Player {
         
         let itemname = itemid
         if (typeof itemid === 'string') {
-            itemname = Dictionary.Items.GetItemWithID(itemid).id
+            itemname = Items.GetItemWithID(itemid).id
         }
-        let item = Dictionary.Items.GetItemWithID(itemid)
+        let item = Items.GetItemWithID(itemid)
         
-        if (Dictionary.Items.GetItemWithID(itemid).type !== 'equipment') {
+        if (Items.GetItemWithID(itemid).type !== 'equipment') {
             const err = new Error('Invalid item')
             return err
         }
@@ -482,7 +482,7 @@ class Player {
         }
         
         if (player.equipment[`${item.slot}`] !== -1) {
-            let itemE = Dictionary.Items.GetItemWithID(player.equipment[`${item.slot}`])
+            let itemE = Items.GetItemWithID(player.equipment[`${item.slot}`])
             if (itemE.add) {
                 for (const key in itemE.add) {
                     if (['armor', 'health_max', 'damage'].includes(key)) {
@@ -542,9 +542,9 @@ class Player {
         
         let _itemid = itemid
         if (typeof itemid === 'string') {
-            _itemid = Dictionary.Items.GetItemWithID(itemid).id
+            _itemid = Items.GetItemWithID(itemid).id
         }
-        let item = Dictionary.Items.GetItemWithID(_itemid)
+        let item = Items.GetItemWithID(_itemid)
 
         if (!item.craftable) {
             const err = new Error('Item not craftable.')
@@ -583,9 +583,9 @@ class Player {
         
         let _itemid = itemid
         if (typeof itemid === 'string') {
-            _itemid = Dictionary.Items.GetItemWithID(itemid).id
+            _itemid = Items.GetItemWithID(itemid).id
         }
-        let item = Dictionary.Items.GetItemWithID(_itemid)
+        let item = Items.GetItemWithID(_itemid)
 
         if (!item.sellable) {
             const err = new Error('Item not sellable.')
