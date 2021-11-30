@@ -417,12 +417,15 @@ class Player {
         let json = player.health
 
         json -= parseInt(amount) * (100 / (100+player.armor))
-
+        
         if (json < 1) {
+            let bag = {}
+            let money = Math.ceil(player.money / 2)
+            let health = Math.ceil(player.health_max / 2)
             for (const id in player.bag) {
-                player.bag[`${id}`] = Math.ceil(player.bag[`${id}`] / 2)
+                bag[`${id}`] = Math.ceil(player.bag[`${id}`] / 2)
             }
-            await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health: json, bag: player.bag, money: Math.ceil(player.money / 2), health: Math.ceil(player.health / 2)}).catch(err => {
+            await PlayerSchema.findOneAndUpdate({id: this.playerid}, {health: json, bag: bag, money: money, health: health}).catch(err => {
                 return err
             })
             return false
@@ -596,8 +599,41 @@ class Player {
             const err = new Error('The player does not have that amount of item.')
             return err;
         }
-        await this.AddMoney(Math.round(item.price*amount))
+        await this.AddMoney(Math.round(item.sell*amount))
         await this.RemoveItem(item.id, amount)
+        return true
+    }
+
+    /**
+     * Sell item
+     * @param {number | string} itemid
+     * @param {number} amount
+     */
+    async BuyItem(itemid, amount=1) {
+        let player = await PlayerSchema.findOne({id: this.playerid})
+        if (!player) {
+            let p = new PlayerSchema({id: this.playerid})
+            await p.save()
+            player = p
+        }
+        
+        let _itemid = itemid
+        if (typeof itemid === 'string') {
+            _itemid = Items.GetItemWithID(itemid).id
+        }
+        let item = Items.GetItemWithID(_itemid)
+
+        if (!item.purchasable) {
+            const err = new Error('Item not purchasable.')
+            return err;
+        }
+
+        if (player.bag[`${item.id}`] < amount) {
+            const err = new Error('The player does not have that amount of money.')
+            return err;
+        }
+        await this.RemoveMoney(Math.round(item.buy*amount))
+        await this.AddItem(item.id, amount)
         return true
     }
 }

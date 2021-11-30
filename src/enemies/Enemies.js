@@ -194,8 +194,8 @@ class Enemies {
      */
     static GetEnemyWithName(enemyname, force = true) {
         if (!force) {
-            if(!typeof enemyname === 'string' || !enemyname || enemyname === "") {
-                throw new Error("Invalid enemy name")
+            if(typeof enemyname !== 'string' || !enemyname || enemyname === "") {
+                return new Error("Invalid enemy name")
             }
         }
         const enemies = fs.readdirSync('./discord-dungeon/enemies')

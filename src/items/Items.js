@@ -23,8 +23,14 @@ for (const _item of items) {
         throw err;
     }
     if (item.sellable === true) {
-        if (!item.price || isNaN(item.price) || Number(item.price) <= 0) {
-            const err = new Error(`Invalid item price. ${_item}`)
+        if (isNaN(item.sell) || Number(item.sell) <= 0) {
+            const err = new Error(`Invalid item price sell. ${_item}`)
+            throw err;
+        }
+    }
+    if (item.purchasable === true) {
+        if (isNaN(item.buy) || Number(item.buy) <= 0) {
+            const err = new Error(`Invalid item price buy. ${_item}`)
             throw err;
         }
     }
@@ -122,7 +128,10 @@ class Item {
         this.id = data.id
         this.name = data.name
         if (data.sellable === true) {
-            this.price = data.price
+            this.sell = data.sell
+        }
+        if (data.purchasable === true) {
+            this.buy = data.buy
         }
         this.quality = data.quality
         this.type = data.type

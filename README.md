@@ -91,7 +91,9 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "id": 1,
     "name": "Wood",
     "sellable": true,
-    "price": 100,
+    "sell": 100,
+    "purchasable": true,
+    "buy": 200,
     "quality": "common",
     "type": "material"
 }
@@ -103,7 +105,9 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "id": 2,
     "name": "Iron Sword",
     "sellable": true,
-    "price": 2000,
+    "sell": 2000,
+    "purchasable": true,
+    "buy": 4000,
     "quality": "special",
     "type": "equipment",
     "slot": "weapon",
@@ -122,7 +126,9 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "id": 3,
     "name": "Iron helmet",
     "sellable": true,
-    "price": 1500,
+    "sell": 1500,
+    "purchasable": true,
+    "buy": 3000,
     "quality": "uncommon",
     "type": "equipment",
     "slot": "helmet",
@@ -139,7 +145,9 @@ To create an item you must create a .json in **./discord-dungeon/items**.
     "id": 4,
     "name": "Iron Chestplate",
     "sellable": true,
-    "price": 3500,
+    "sell": 3500,
+    "purchasable": true,
+    "buy": 7000,
     "quality": "rare",
     "type": "equipment",
     "slot": "chestplate",
@@ -151,13 +159,15 @@ To create an item you must create a .json in **./discord-dungeon/items**.
 ```
 
 ##### Craftable
-Need 8 Wood(ID = 1) for craft this item.
+Need 8 items with ID 1 for craft this item.
 ```js
 {
     "id": 5,
     "name": "Wooden Chestplate",
     "sellable": true,
-    "price": 3500,
+    "sell": 2500,
+    "purchasable": true,
+    "buy": 5000,
     "quality": 3,
     "type": "equipment",
     "slot": "chestplate",
@@ -340,6 +350,24 @@ const client = new Dungeon.Client('<MONGODB-URL>')
 
 const player = new Players.Player('<DISCORD-ID>')
 player.CraftItem(<Item id or name>, <amount>)
+```
+
+### Sell-item
+```js
+const {Dungeon, Players} = require('discord-dungeon')
+const client = new Dungeon.Client('<MONGODB-URL>')
+
+const player = new Players.Player('<DISCORD-ID>')
+player.SellItem(<Item id or name>, <amount>)
+```
+
+### Buy-item
+```js
+const {Dungeon, Players} = require('discord-dungeon')
+const client = new Dungeon.Client('<MONGODB-URL>')
+
+const player = new Players.Player('<DISCORD-ID>')
+player.BuyItem(<Item id or name>, <amount>)
 ```
 
 ## Enemies
