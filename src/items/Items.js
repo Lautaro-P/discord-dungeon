@@ -128,9 +128,11 @@ class Item {
         this.id = data.id
         this.name = data.name
         if (data.sellable === true) {
+            this.sellable = data.sellable
             this.sell = data.sell
         }
         if (data.purchasable === true) {
+            this.purchasable = data.purchasable
             this.buy = data.buy
         }
         this.quality = data.quality
