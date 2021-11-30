@@ -153,7 +153,6 @@ class Items {
     /**
      * Get the item by ID
      * @param {number} itemid Item ID
-     * @param {boolean} [force] 
      * @returns {(Item|false)} Returns {@link Item}:
      * ```json 
      * {id: 0, price: 123} 
@@ -161,11 +160,9 @@ class Items {
      * if not found returns false
      */
 
-    static GetItemWithID(itemid, force = true) {
-        if (!force) {
-            if(isNaN(itemid) || Number(itemid) < 0) {
-                return new Error("Invalid item id")
-            }
+    static GetItemWithID(itemid) {
+        if(isNaN(itemid) || Number(itemid) < 0) {
+            return new Error("Invalid item id")
         }
         const items = fs.readdirSync('./discord-dungeon/items')
 
@@ -180,7 +177,6 @@ class Items {
     /**
      * Get the item by name
      * @param {string} itemname Item name
-     * @param {boolean} [force] 
      * @returns {(Item|false)} Returns {@link Item}:
      * ```json 
      * {id: 0, price: 123} 
@@ -188,11 +184,9 @@ class Items {
      * if not found returns false
      */
 
-    static GetItemWithName(itemname, force = true) {
-        if (!force) {
-            if(!typeof itemname === 'string' || !itemname || itemname === "") {
-                throw new Error("Null item name")
-            }
+    static GetItemWithName(itemname) {
+        if(!typeof itemname === 'string' || !itemname || itemname === "") {
+        return new Error("Null item name")
         }
         
         const items = fs.readdirSync('./discord-dungeon/items')
