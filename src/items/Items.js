@@ -185,7 +185,7 @@ class Items {
      */
 
     static GetItemWithName(itemname) {
-        if(!typeof itemname === 'string' || !itemname || itemname === "") {
+        if(typeof itemname !== 'string' || !itemname || itemname === "") {
         return new Error("Null item name")
         }
         

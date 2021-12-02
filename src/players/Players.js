@@ -595,7 +595,7 @@ class Player {
             return err;
         }
 
-        if (player.bag[`${item.id}`] < amount) {
+        if (!player.bag[`${item.id}`] || player.bag[`${item.id}`] < amount) {
             const err = new Error('The player does not have that amount of item.')
             return err;
         }

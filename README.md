@@ -29,6 +29,8 @@
 	* [Get stats](#Get-stats)
 	* [Equip item](#Equip-item)
     * [Craft item](#Craft-item)
+    * [Sell item](#Sell-item)
+    * [Buy item](#Buy-item)
 * [Enemies](#Enemies)
 	* [Get enemy with id](#Get-enemy-with-id)
 	* [Get enemy with name](#Get-enemy-with-name)
