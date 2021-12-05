@@ -12,6 +12,120 @@ const items = fs.readdirSync('./discord-dungeon/items')
 let ids = []
 let names = []
 
+class Item {
+    constructor(data = {}){
+
+        this.id = data.id
+        this.name = data.name
+        if (data.sellable === true) {
+            this.sellable = data.sellable
+            this.sell = data.sell
+        }
+        if (data.purchasable === true) {
+            this.purchasable = data.purchasable
+            this.buy = data.buy
+        }
+        this.quality = data.quality
+        this.type = data.type
+        if (data.type === 'equipment') {
+            this.slot = data.slot
+            this.add = data.add
+            this.remove = data.remove
+        }
+        if (data.craftable === true) {
+            this.craftable = data.craftable
+            this.craft = data.craft
+        }
+    }
+}
+
+class Items {
+
+    /**
+     * Get the item by ID
+     * @param {number} itemid Item ID
+     * @returns {(Item|false)} Returns {@link Item}:
+     * ```json 
+     * {id: 0, price: 123} 
+     * ```
+     * if not found returns false
+     */
+
+    static GetItemWithID(itemid) {
+        if(isNaN(itemid) || Number(itemid) < 0) {
+            return new Error("Invalid item id")
+        }
+        const items = fs.readdirSync('./discord-dungeon/items')
+
+        for (const _item of items) {
+            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
+            if (item.id === parseInt(itemid)) return new Item(item)
+        }
+
+        return false
+    }
+
+    /**
+     * Get the item by name
+     * @param {string} itemname Item name
+     * @returns {(Item|false)} Returns {@link Item}:
+     * ```json 
+     * {id: 0, price: 123} 
+     * ```
+     * if not found returns false
+     */
+
+    static GetItemWithName(itemname) {
+        if(typeof itemname !== 'string' || !itemname || itemname === "") {
+        return new Error("Null item name")
+        }
+        
+        const items = fs.readdirSync('./discord-dungeon/items')
+
+        for (const _item of items) {
+            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
+            if (item.name.toLowerCase() === itemname.toLowerCase()) return new Item(item)
+        }
+
+        return false
+    }
+
+    /**
+     * Get all items in the dictionary
+     * @param {string} sort Sort type ('alphabet', 'id', 'quality', 'price')
+     * @returns {Item[]} Item removed successfully
+     */
+
+    static GetAllItems(sort='alphabet') {
+        if (!['alphabet', 'id', 'quality', 'price'].includes(sort)) {
+            const err = new Error('Wrong type sort')
+            throw err;
+        }
+
+        const _items = fs.readdirSync('./discord-dungeon/items')
+
+        let items = []
+        for (const _item of _items) {
+            let item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
+            items.push(new Item(item))
+        }
+
+        if(sort === 'id') {
+            items.sort((a, b) => a.id - b.id)
+        }
+
+        if(sort === 'quality') {
+            items.sort((a, b) => b.quality - a.quality)
+        }
+
+        if(sort === 'price') {
+            items.sort((a, b) => b.price - a.price)
+        }
+
+        return items
+    }
+}
+
 for (const _item of items) {
     const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
     if (isNaN(item.id) || Number(item.id) <= -1 || !Number.isInteger(Number(item.id))) {
@@ -121,118 +235,5 @@ findDuplicates(names).forEach(name => {
         }
     }
 });
-
-class Item {
-    constructor(data = {}){
-
-        this.id = data.id
-        this.name = data.name
-        if (data.sellable === true) {
-            this.sellable = data.sellable
-            this.sell = data.sell
-        }
-        if (data.purchasable === true) {
-            this.purchasable = data.purchasable
-            this.buy = data.buy
-        }
-        this.quality = data.quality
-        this.type = data.type
-        if (data.type === 'equipment') {
-            this.slot = data.slot
-            this.add = data.add
-            this.remove = data.remove
-        }
-        if (data.craftable === true) {
-            this.craft = data.craft
-        }
-    }
-}
-
-class Items {
-
-    /**
-     * Get the item by ID
-     * @param {number} itemid Item ID
-     * @returns {(Item|false)} Returns {@link Item}:
-     * ```json 
-     * {id: 0, price: 123} 
-     * ```
-     * if not found returns false
-     */
-
-    static GetItemWithID(itemid) {
-        if(isNaN(itemid) || Number(itemid) < 0) {
-            return new Error("Invalid item id")
-        }
-        const items = fs.readdirSync('./discord-dungeon/items')
-
-        for (const _item of items) {
-            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            if (item.id === parseInt(itemid)) return new Item(item)
-        }
-
-        return false
-    }
-
-    /**
-     * Get the item by name
-     * @param {string} itemname Item name
-     * @returns {(Item|false)} Returns {@link Item}:
-     * ```json 
-     * {id: 0, price: 123} 
-     * ```
-     * if not found returns false
-     */
-
-    static GetItemWithName(itemname) {
-        if(typeof itemname !== 'string' || !itemname || itemname === "") {
-        return new Error("Null item name")
-        }
-        
-        const items = fs.readdirSync('./discord-dungeon/items')
-
-        for (const _item of items) {
-            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            if (item.name.toLowerCase() === itemname.toLowerCase()) return new Item(item)
-        }
-
-        return false
-    }
-
-    /**
-     * Get all items in the dictionary
-     * @param {string} sort Sort type ('alphabet', 'id', 'quality', 'price')
-     * @returns {Item[]} Item removed successfully
-     */
-
-    static GetAllItems(sort='alphabet') {
-        if (!['alphabet', 'id', 'quality', 'price'].includes(sort)) {
-            const err = new Error('Wrong type sort')
-            throw err;
-        }
-
-        const _items = fs.readdirSync('./discord-dungeon/items')
-
-        let items = []
-        for (const _item of _items) {
-            let item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            items.push(new Item(item))
-        }
-
-        if(sort === 'id') {
-            items.sort((a, b) => a.id - b.id)
-        }
-
-        if(sort === 'quality') {
-            items.sort((a, b) => b.quality - a.quality)
-        }
-
-        if(sort === 'price') {
-            items.sort((a, b) => b.price - a.price)
-        }
-
-        return items
-    }
-}
 
 module.exports = {Items}
