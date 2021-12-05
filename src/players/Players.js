@@ -559,7 +559,7 @@ class Player {
                 const err = new Error('The player does not have that item.')
                 return err;
             }
-            if (player.bag[`${id}`] >= Math.round(item.craft[`${id}`] * amount)) {
+            if (player.bag[`${id}`] < Math.round(item.craft[`${id}`] * amount)) {
                 const err = new Error('The player does not have that amount of item.')
                 return err;
             }
