@@ -549,7 +549,7 @@ class Player {
         }
         let item = Items.GetItemWithID(_itemid)
 
-        if (!item.craftable) {
+        if (!item.craft) {
             const err = new Error('Item not craftable.')
             return err;
         }
@@ -590,7 +590,7 @@ class Player {
         }
         let item = Items.GetItemWithID(_itemid)
 
-        if (!item.sellable) {
+        if (item.sellPrice === 0) {
             const err = new Error('Item not sellable.')
             return err;
         }
@@ -623,7 +623,7 @@ class Player {
         }
         let item = Items.GetItemWithID(_itemid)
 
-        if (!item.purchasable) {
+        if (!item.buyPrice) {
             const err = new Error('Item not purchasable.')
             return err;
         }

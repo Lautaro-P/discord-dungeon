@@ -1,40 +1,47 @@
 const fs = require('fs')
+const xlsx = require('xlsx')
 
 if(!fs.existsSync('./discord-dungeon')) {
     fs.mkdirSync('./discord-dungeon')
 }
 
-if(!fs.existsSync('./discord-dungeon/items')) {
-    fs.mkdirSync('./discord-dungeon/items')
+if(!fs.existsSync('./discord-dungeon/items.xlsx')) {
+    const data = [{name:"Example", sellPrice:10, buyPrice:0, quality: "common", type: "material", slot:"", add: "{}", remove: "{}", craft: "{}"}, {name:"Example 2", sellPrice:20, buyPrice:10, quality: "common", type: "equipment", slot:"weapon", add: '{"damage":3, "health_max":20}', remove: '{"armor":2}', craft: '{"1": 4}'}]
+
+    const newWB = xlsx.utils.book_new()
+    const newData = xlsx.utils.json_to_sheet(data)
+
+    xlsx.utils.book_append_sheet(newWB, newData, "Items")
+    xlsx.writeFile(newWB, './discord-dungeon/items.xlsx')
 }
 
-const items = fs.readdirSync('./discord-dungeon/items')
-let ids = []
+const wb = xlsx.readFile('./discord-dungeon/items.xlsx')
+const ws = wb.Sheets["Items"]
+
+let data = xlsx.utils.sheet_to_json(ws)
+
+const items = data.map((_item, i) => {
+    let item = _item
+    item.id = i+1
+    return item
+})
 let names = []
 
 class Item {
     constructor(data = {}){
-
         this.id = data.id
         this.name = data.name
-        if (data.sellable === true) {
-            this.sellable = data.sellable
-            this.sell = data.sell
-        }
-        if (data.purchasable === true) {
-            this.purchasable = data.purchasable
-            this.buy = data.buy
-        }
+        this.sellPrice = data.sellPrice
+        this.buyPrice = data.buyPrice
         this.quality = data.quality
         this.type = data.type
         if (data.type === 'equipment') {
             this.slot = data.slot
-            this.add = data.add
-            this.remove = data.remove
+            this.add = JSON.parse(data.add)
+            this.remove = JSON.parse(data.remove)
         }
-        if (data.craftable === true) {
-            this.craftable = data.craftable
-            this.craft = data.craft
+        if (data.craft !== "{}") {
+            this.craft = JSON.parse(data.craft)
         }
     }
 }
@@ -55,11 +62,9 @@ class Items {
         if(isNaN(itemid) || Number(itemid) < 0) {
             return new Error("Invalid item id")
         }
-        const items = fs.readdirSync('./discord-dungeon/items')
 
         for (const _item of items) {
-            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            if (item.id === parseInt(itemid)) return new Item(item)
+            if (_item.id === parseInt(itemid)) return new Item(_item)
         }
 
         return false
@@ -79,12 +84,9 @@ class Items {
         if(typeof itemname !== 'string' || !itemname || itemname === "") {
         return new Error("Null item name")
         }
-        
-        const items = fs.readdirSync('./discord-dungeon/items')
 
         for (const _item of items) {
-            const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            if (item.name.toLowerCase() === itemname.toLowerCase()) return new Item(item)
+            if (_item.name.toLowerCase() === itemname.toLowerCase()) return new Item(_item)
         }
 
         return false
@@ -99,77 +101,70 @@ class Items {
     static GetAllItems(sort='alphabet') {
         if (!['alphabet', 'id', 'quality', 'price'].includes(sort)) {
             const err = new Error('Wrong type sort')
-            throw err;
+            return err;
         }
 
-        const _items = fs.readdirSync('./discord-dungeon/items')
-
-        let items = []
-        for (const _item of _items) {
-            let item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-            items.push(new Item(item))
+        let Items = []
+        for (const _item of items) {
+            Items.push(new Item(_item))
         }
 
         if(sort === 'id') {
-            items.sort((a, b) => a.id - b.id)
+            Items.sort((a, b) => a.id - b.id)
         }
 
         if(sort === 'quality') {
-            items.sort((a, b) => b.quality - a.quality)
+            Items.sort((a, b) => b.quality - a.quality)
         }
 
         if(sort === 'price') {
-            items.sort((a, b) => b.price - a.price)
+            Items.sort((a, b) => b.sellPrice - a.sellPrice)
         }
 
-        return items
+        return Items
     }
 }
 
 for (const _item of items) {
-    const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-    if (isNaN(item.id) || Number(item.id) <= -1 || !Number.isInteger(Number(item.id))) {
-        const err = new Error(`Invalid item id. ${_item}`)
-        throw err;
-    }
+    const item = new Item(_item)
     if (!item.name || typeof item.name !== 'string' || item.name.length > 20) {
-        const err = new Error(`Invalid item name. ${_item}`)
+        const err = new Error(`Invalid item name. line: ${item.id+1}`)
         throw err;
     }
-    if (item.sellable === true) {
-        if (isNaN(item.sell) || Number(item.sell) <= 0) {
-            const err = new Error(`Invalid item price sell. ${_item}`)
+    if (item.sellPrice !== 0) {
+        if (isNaN(item.sellPrice) || Number(item.sellPrice) <= 0) {
+            const err = new Error(`Invalid item price sell. line: ${item.id+1}`)
             throw err;
         }
     }
-    if (item.purchasable === true) {
-        if (isNaN(item.buy) || Number(item.buy) <= 0) {
-            const err = new Error(`Invalid item price buy. ${_item}`)
+    if (item.buyPrice !== 0) {
+        if (isNaN(item.buyPrice) || Number(item.buyPrice) <= 0) {
+            const err = new Error(`Invalid item price buy. line: ${item.id+1}`)
             throw err;
         }
     }
     if (!item.quality || !['common', 'uncommon', 'special', 'rare', 'very_rare', 'mythical'].includes(item.quality)) {
-        const err = new Error(`Invalid item quality. ${_item}`)
+        const err = new Error(`Invalid item quality. line: ${item.id+1}`)
         throw err;
     }
     if (!['material', 'equipment'].includes(item.type)) {
-        const err = new Error(`Invalid item type. ${_item}`)
+        const err = new Error(`Invalid item type. line: ${item.id+1}`)
         throw err;
     }
     if(item.type === 'equipment') {
         if (!item.slot || !['weapon', 'helmet', 'chestplate'].includes(item.slot) ) {
-            const err = new Error(`Invalid item slot. ${_item}`)
+            const err = new Error(`Invalid item slot. line: ${item.id+1}`)
             throw err;
         }
         if (item.add) {
             for (const key in item.add) {
                 if (!['health_max', 'damage', 'armor'].includes(key)) {
-                    const err = new Error(`Invalid item add stat ${key}. ${_item}`)
+                    const err = new Error(`Invalid item add stat ${key}. line: ${item.id+1}`)
                     throw err;
                 }
                 else {
                     if (isNaN(item.add[`${key}`]) || Number(item.add[`${key}`]) <= -1 || !Number.isInteger(Number(item.add[`${key}`]))) {
-                        const err = new Error(`Invalid item add value stat ${key}. ${_item}`)
+                        const err = new Error(`Invalid item add value stat ${key}. line: ${item.id+1}`)
                         throw err;
                     }
                 }
@@ -178,59 +173,43 @@ for (const _item of items) {
         if (item.remove) {
             for (const key in item.remove) {
                 if (!['health_max', 'damage', 'armor'].includes(key)) {
-                    const err = new Error(`Invalid item add stat ${key}.`)
+                    const err = new Error(`Invalid item add stat ${key}. line: ${item.id+1}`)
                     throw err;
                 }
                 else {
                     if (isNaN(item.remove[`${key}`]) || Number(item.remove[`${key}`]) < 0 || !Number.isInteger(Number(item.remove[`${key}`]))) {
-                        const err = new Error(`Invalid item add value stat ${key}.`)
+                        const err = new Error(`Invalid item add value stat ${key}. line: ${item.id+1}`)
                         throw err;
                     }
                 }
             }
         }
-        if(item.craftable === true) {
-            if (!item.craft) {
-                const err = new Error(`Invalid item craft. ${_item}`)
-                throw err;
-            }
-            if (item.craft) {
-                for (const key in item.craft) {
-                    if (!Items.GetItemWithID(key)) {
-                        const err = new Error(`Invalid material id craft ${key}. ${_item}`)
+
+        if (item.craft) {
+            for (const key in item.craft) {
+                if (!Items.GetItemWithID(key)) {
+                    const err = new Error(`Invalid material id craft ${key}. line: ${item.id+1}`)
+                    throw err;
+                }
+                else {
+                    if (isNaN(item.craft[`${key}`]) || Number(item.craft[`${key}`]) <= -1 || !Number.isInteger(Number(item.craft[`${key}`]))) {
+                        const err = new Error(`Invalid material amount craft ${key}. line: ${item.id+1}`)
                         throw err;
-                    }
-                    else {
-                        if (isNaN(item.craft[`${key}`]) || Number(item.craft[`${key}`]) <= -1 || !Number.isInteger(Number(item.craft[`${key}`]))) {
-                            const err = new Error(`Invalid material amount craft ${key}. ${_item}`)
-                            throw err;
-                        }
                     }
                 }
             }
         }
     }
-    ids.push(item.id)
     names.push(item.name)
 }
 
 let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index)
 
-findDuplicates(ids).forEach(id => {
-    for (const _item of items) {
-        const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-        if (item.id === parseInt(id)) {
-            const err = new Error(`Duplicated item id. ${_item}`)
-            throw err;
-        }
-    }
-});
-
 findDuplicates(names).forEach(name => {
     for (const _item of items) {
-        const item = JSON.parse(fs.readFileSync(`./discord-dungeon/items/${_item}`, "utf8"))
-        if (item.name.toLowerCase() === name.toLowerCase()) {
-            const err = new Error(`Duplicated item name. ${_item}`)
+        const item = new Item(_item)
+        if (item.name.toLowerCase().trim() === name.toLowerCase().trim()) {
+            const err = new Error(`Duplicated item name. line: ${item.id+1}`)
             throw err;
         }
     }
