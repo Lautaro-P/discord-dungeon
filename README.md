@@ -3,18 +3,7 @@
 * [Initialization](#Initialization)
 	* [Connect MongoDB](#Connect-MongoDB)
 	* [Create item](#Create-item)
-		* [Quality](#Quality)
-		* [Type Items](#Type)
-		* [Examples items](#Examples-items)
-			* [Material](#Material)
-			* [Weapon](#Weapon)
-			* [Helmet](#Helmet)
-			* [Chestplate](#Chestplate)
-            * [Craftable](#Craftable)
 	* [Create enemy](#Create-enemy)
-		* [Rarity enemy](#Rarity-enemy)
-		* [Examples enemies](#Examples-enemies)
-			* [Slime](#Slime)
 * [Players](#Players)
 	* [Add item](#Add-Item)
 	* [Remove item](#Remove-Item)
@@ -51,182 +40,79 @@ const {Dungeon} = require('discord-dungeon')
 const client = new Dungeon.Client('<MONGODB-URL>')
 ```
 #### Create-item
-To create an item you must create a .json in **./discord-dungeon/items**.
 
-##### Quality
-| Quality |
-| ------------ |
-| common  |
-| uncommon  |
-| special  |
-| rare  |
-| very_rare  |
-| mythical   |
+![Items Examples](https://user-images.githubusercontent.com/86976644/145051806-0aaa990d-7467-410a-95c7-668a8ed70eb1.png)
 
-##### Type Items
-| Type |
-| ------------ |
-| material  |
-| equipment  |
+To create items you must modify the file located at './discord-dungeon/items.xlsx'. The columns should be named with the following specification:
 
+ > Item ID is its row minus 1
 
+ - name: this will be the name of the item.
 
-| Equipment |
-| ------------ |
-| weapon  |
-| helmet  |
-| chestplate  |
+ - buyprice: this is the buy price that will be used for the item in the shop. Set to 0 to make this unbuyable.
 
+ - sellprice: this is the sell price that will be used for the item in the shop. Set to 0 to make this unsellable.
 
+ - quality: this will be the quality of the item.
 
-| Add or remove stat |
-| ------------ |
-| health_max  |
-| damage  |
-| armor  |
+ - type: this will be the type of item. There are only 2 types: ("material" and "equipment").
 
-#### Examples-items
+ - slot: (only if the type of item is "equipment") this will be the type of item. There are only 3 slots: ("weapon", "helmet" and "chestplate").
 
-##### Material
-```json
-{
-    "id": 1,
-    "name": "Wood",
-    "sellable": true,
-    "sell": 100,
-    "purchasable": true,
-    "buy": 200,
-    "quality": "common",
-    "type": "material"
-}
-```
+ - add: (only if the type of item is "equipment") this will be the stats that the item adds.
+ > Structure: {"health_max", "armor" or "damage": amount}.
+ > 
+ > Example: {"health_max": 20, "armor": 5}
 
-##### Weapon
-```js
-{
-    "id": 2,
-    "name": "Iron Sword",
-    "sellable": true,
-    "sell": 2000,
-    "purchasable": true,
-    "buy": 4000,
-    "quality": "special",
-    "type": "equipment",
-    "slot": "weapon",
-    "add": {
-        "damage": 5
-    },
-    "remove": {
-        "health_max": 10
-    }
-}
-```
+ - remove: (only if the type of item is "equipment") this will be the stats that the item removes.
+ > Structure: {"health_max", "armor" or "damage": amount}.
+ > 
+ > Example: {"health_max": 20, "armor": 5}
 
-##### Helmet
-```js
-{
-    "id": 3,
-    "name": "Iron helmet",
-    "sellable": true,
-    "sell": 1500,
-    "purchasable": true,
-    "buy": 3000,
-    "quality": "uncommon",
-    "type": "equipment",
-    "slot": "helmet",
-    "add": {
-        "armor": 4,
-	"health_max": 30
-    }
-}
-```
-
-##### Chestplate
-```js
-{
-    "id": 4,
-    "name": "Iron Chestplate",
-    "sellable": true,
-    "sell": 3500,
-    "purchasable": true,
-    "buy": 7000,
-    "quality": "rare",
-    "type": "equipment",
-    "slot": "chestplate",
-    "add": {
-        "armor": 8,
-	"health_max": 60
-    }
-}
-```
-
-##### Craftable
-Need 8 items with ID 1 for craft this item.
-```js
-{
-    "id": 5,
-    "name": "Wooden Chestplate",
-    "sellable": true,
-    "sell": 2500,
-    "purchasable": true,
-    "buy": 5000,
-    "quality": 3,
-    "type": "equipment",
-    "slot": "chestplate",
-    "add": {
-        "armor": 2,
-	    "health_max": 20
-    }
-    "craftable": true
-    "craft": {
-        "1": 8
-        // "ID": <amount>
-    }
-}
-```
+ - craft: this will be what the article requires to be crafted.
+ > Structure: {"item id": amount}.
+ > 
+ > Example: {"1": 5, "3": 12}
 
 #### Create-enemy
-To create an enemy you must create a .json in **./discord-dungeon/enemies**.
 
-##### Rarity-enemy
-| Rarity | Percentage |
-| ------------ | ------------ |
-| common  | 100  |
-| uncommon  | 60  |
-| special  | 30  |
-| rare  | 12  |
-| very_rare  | 6  |
-| mythical  | 2  |
+![Enemies Example](https://user-images.githubusercontent.com/86976644/145060370-24e9154e-ce85-4334-9ed3-68135bf70523.png)
 
-#### Examples-enemies
+To create items you must modify the file located at './discord-dungeon/enemies.xlsx'. The columns should be named with the following specification:
 
-##### Slime
+ > Enemy ID is its row minus 1
 
-```js
-{
-    "id": 1,
-    "name": "Slime",
-    "zone": "Cave", // Spawning area;
-    "stage": 1, // Stage where it spawns;
-    "health": 5,
-    "damage": 1,
-    "armor": 1,
-    "money": [100, 200], // Array:[min, max] or Number;
-    "xp": [2, 5], // Array:[min, max] or Number;
-    "rarity": "common",
-    "drop": {
-        "100": { // 100 percent;
-        	"1": [5, 7] //Item id 1; Array:[min, max] or Number;
-        },
-        "50": { // 50 percent;
-        	"2": [7, 8] //Item id 2; Array:[min, max] or Number;
-        },
-	"32": { // 32 percent; etc...
-		"3": 1 //Item id 3; Array:[min, max] or Number;
-	}
-    }
-}
-```
+ - zone: this will be the zone where the enemy appears.
+
+ - stage: this will be the stage where the enemy will start to appear.
+
+ - health: this will be the enemy's health.
+
+ - damage: this will be the enemy's damage.
+
+ - armor: this will be the enemy's armor.
+
+ - money: this will be the amount of money that the enemy drops.
+ > Structure: 20 or 20,40 (20,40 will choose a random number between 20 and 40)
+
+ - rarity: this will be the rarity to appear from the enemy.
+
+ -
+	| Rarity | Percentage |
+	| ------------ | ------------ |
+	| common  | 100  |
+	| uncommon  | 60  |
+	| special  | 30  |
+	| rare  | 12  |
+	| very_rare  | 6  |
+	| mythical  | 2  |
+
+
+ - drop: this will be the quantity and probability of dropping items.
+ > Structure: {"percentage": {"item id": the amounts you can drop}, "percentage 2": {"item id 2": the amounts you can drop}}.
+ > 
+ > Example: {"100": {"1": "5,10"}, "50": {"2": "1,8", "3": "2,4"}}
+ > drops with 100 probability the item with id 1 between 5 and 10, with 50 probability the items with id 2 between 1 and 8, with id 3 between 2 and 4
 
 ## Players
 
