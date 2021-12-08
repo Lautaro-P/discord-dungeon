@@ -70,6 +70,17 @@ class Enemy {
         }
         return Drop
     }
+
+    GetMoneyDrop() {
+        let money = 0;
+        if (Array.isArray(this.money)) {
+            money = Math.floor(Math.random() * (this.money[1] - this.money[0] + 1)) + this.money[0]
+        }
+        else {
+            money = parseInt(this.money)
+        }
+        return money
+    }
 }
 
 
