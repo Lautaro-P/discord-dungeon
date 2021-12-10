@@ -65,6 +65,10 @@ class Enemy {
                         const amount = Math.floor(Math.random() * (drop[1] - drop[0] + 1)) + drop[0]
                         Drop.push({Item: item, amount: amount})
                     }
+                    else {
+                        const item = Items.GetItemWithID(id)
+                        Drop.push({Item: item, amount: this.drop[`${key}`][`${id}`]})
+                    }
                 }
             }
         }

@@ -74,7 +74,7 @@ class Player {
      * @param {number} [amount] Amount to remove (Default: 1)
      * @returns {boolean} Item added successfully
      */
-    async RemoveItem(item, amount = 1, force = false) {
+    async RemoveItem(item, amount = 1) {
         let player = await PlayerSchema.findOne({id: this.playerid})
         if (!player) {
             let p = new PlayerSchema({id: this.playerid})
@@ -110,21 +110,12 @@ class Player {
         if(!json[`${itemname}`]) {
             return false
         }
-        if(force) {
-            if(json[`${itemname}`] <= amount) {
-                delete json[`${itemname}`]
-            }
+        if(json[`${itemname}`] < amount) {
+            const err = new Error('There are not that many items in the user.')
+            return err
         }
-
-        
-        if(!force) {
-            if(json[`${itemname}`] < amount) {
-                const err = new Error('There are not that many items in the user.')
-                return err
-            }
-            if(json[`${itemname}`] === amount) {
-                delete json[`${itemname}`]
-            }
+        if(json[`${itemname}`] === amount) {
+            delete json[`${itemname}`]
         }
         
         if (json[`${itemname}`] > amount) {
@@ -522,7 +513,7 @@ class Player {
                 player[`${key}`] += item.add[`${key}`]
             }
         }
-        await this.RemoveItem(item.id, 1, true)
+        await this.RemoveItem(item.id, 1)
         player.equipment[`${item.slot}`] = item.id
         await PlayerSchema.findOneAndUpdate({id: this.playerid}, {equipment: player.equipment, bag: player.bag, armor: player.armor, health_max: player.health_max, damage: player.damage}).catch(err => {
             return err
@@ -599,7 +590,7 @@ class Player {
             const err = new Error('The player does not have that amount of item.')
             return err;
         }
-        await this.AddMoney(Math.round(item.sell*amount))
+        await this.AddMoney(Math.round(item.sellPrice*amount))
         await this.RemoveItem(item.id, amount)
         return true
     }
@@ -623,7 +614,7 @@ class Player {
         }
         let item = Items.GetItemWithID(_itemid)
 
-        if (!item.buyPrice) {
+        if (item.buyPrice === 0) {
             const err = new Error('Item not purchasable.')
             return err;
         }
@@ -632,7 +623,7 @@ class Player {
             const err = new Error('The player does not have that amount of money.')
             return err;
         }
-        await this.RemoveMoney(Math.round(item.buy*amount))
+        await this.RemoveMoney(Math.round(item.buyPrice*amount))
         await this.AddItem(item.id, amount)
         return true
     }
