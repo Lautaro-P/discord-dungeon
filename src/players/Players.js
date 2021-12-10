@@ -243,12 +243,22 @@ class Player {
                 items.push({Item: Items.GetItemWithID(parseInt(itemid)), amount:json[`${itemid}`]})
             }
         }
+        
+        let quality = {
+            "common": 0,
+            "uncommon": 1,
+            "special": 2,
+            "rare": 3,
+            "very_rare": 4,
+            "mythical": 5
+        }
+
         if (sort === 'amount') {
-            items.sort((a, b) => b.amount - a.amount)
+            items.sort((a, b) => a.amount - b.amount)
         }
 
         if (sort === 'quality') {
-            items.sort((a, b) => b.Item.quality - a.Item.quality)
+            items.sort((a, b) => quality[a.Item.quality] - quality[b.Item.quality])
         }
         
         return items
