@@ -1,6 +1,11 @@
 const { Items }= require('../items/Items')
 const PlayerSchema = require('../Schemas/Player')
 
+const GetAllPlayers = () => {
+    let players = await PlayerSchema.find({})
+    return players
+}
+
 /**
  * Player stats, bag and equipment.
  */
