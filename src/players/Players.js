@@ -1,7 +1,7 @@
 const { Items }= require('../items/Items')
 const PlayerSchema = require('../Schemas/Player')
 
-const GetAllPlayers = () => {
+const GetAllPlayers = async () => {
     let players = await PlayerSchema.find({})
     return players
 }
@@ -644,4 +644,4 @@ class Player {
     }
 }
 
-module.exports = {Player}
+module.exports = {Player, GetAllPlayers}
