@@ -17,12 +17,12 @@ class Player {
      */
     constructor(playerid){
 
-        if(!playerid) {
+        if(!playerid || isNaN(playerid)) {
             const err = new Error("Null user id")
             throw err;
         }
 
-        this.playerid = playerid
+        this.playerid = `${playerid}`
     }
 
     /**

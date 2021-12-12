@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const Schema = new mongoose.Schema({
-    id: Number,
+    id: {type: String},
     money: {type: Number, default: 20},
     health: {type: Number, default: 100},
     health_max: {type: Number, default: 100},
