@@ -39,6 +39,7 @@ class Enemy {
         this.health = data.health
         this.damage = data.damage
         this.armor = data.armor
+        this.xp = isNaN(data.xp) ? data.xp.split(",").map(Number)[1] ? data.xp.split(",").map(Number) : Number(data.xp) : Number(data.xp)
         this.money = isNaN(data.money) ? data.money.split(",").map(Number)[1] ? data.money.split(",").map(Number) : Number(data.money) : Number(data.money)
         this.rarity = data.rarity
         if (data.drop !== "{}") {
@@ -84,6 +85,17 @@ class Enemy {
             money = parseInt(this.money)
         }
         return money
+    }
+
+    GetXpDrop() {
+        let xp = 0;
+        if (Array.isArray(this.xp)) {
+            xp = Math.floor(Math.random() * (this.xp[1] - this.xp[0] + 1)) + this.xp[0]
+        }
+        else {
+            xp = parseInt(this.xp)
+        }
+        return xp
     }
 }
 
