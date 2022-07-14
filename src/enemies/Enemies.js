@@ -7,8 +7,30 @@ if(!fs.existsSync('./discord-dungeon')) {
 }
 
 if(!fs.existsSync('./discord-dungeon/enemies.xlsx')) {
-    const data = [{name:"Example", zone:"cave", stage: 1, health:10, damage:1, armor: 0, money:25, rarity: "common", drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'},
-    {name:"Example 2", zone:"cave", stage: 2, health:10, damage:1, armor: 0, money:"25,60", rarity: "common", drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'}]
+    const data = [
+        {
+            name:"Example",
+            zone:"cave",
+            stage: 1,
+            health:10,
+            damage:1,
+            armor: 0,
+            money:25,
+            rarity: "common",
+            drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'
+        },
+        {
+            name:"Example 2",
+            zone:"cave",
+            stage: 2,
+            health:10,
+            damage:1,
+            armor: 0,
+            money:"25,60",
+            rarity: "common",
+            drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'
+        }
+    ]
 
     const newWB = xlsx.utils.book_new()
     const newData = xlsx.utils.json_to_sheet(data)
@@ -229,6 +251,20 @@ for (const _enemy of enemies) {
         else {
             if (isNaN(enemy.money) || Number(enemy.money) < 1) {
                 const err = new Error(`Invalid enemy money drop. ${_enemy}`)
+                throw err;
+            }
+        }
+    }
+    if (enemy.xp) {
+        if (Array.isArray(enemy.xp)) {
+            if (!enemy.xp[0] || !enemy.xp[1] || isNaN(enemy.xp[0]) || isNaN(enemy.xp[1]) || Number(enemy.xp[0]) < 1 || Number(enemy.xp[0]) >= Number(enemy.xp[1])) {
+                const err = new Error(`Invalid enemy xp drop range. ${_enemy}`)
+                throw err;
+            }
+        }
+        else {
+            if (isNaN(enemy.xp) || Number(enemy.xp) < 1) {
+                const err = new Error(`Invalid enemy xp drop. ${_enemy}`)
                 throw err;
             }
         }

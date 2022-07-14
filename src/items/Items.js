@@ -1,12 +1,40 @@
 const fs = require('fs')
 const xlsx = require('xlsx')
+const { Skills } = require('../skills/Skills')
 
 if(!fs.existsSync('./discord-dungeon')) {
     fs.mkdirSync('./discord-dungeon')
 }
 
 if(!fs.existsSync('./discord-dungeon/items.xlsx')) {
-    const data = [{name:"Example", sellPrice:10, buyPrice:0, quality: "common", type: "material", slot:"", add: "{}", remove: "{}", craft: "{}"}, {name:"Example 2", sellPrice:20, buyPrice:10, quality: "common", type: "equipment", slot:"weapon", add: '{"damage":3, "health_max":20}', remove: '{"armor":2}', craft: '{"1": 4}'}]
+    const data = [
+        {
+            name:"Wood",
+            sellPrice:10,
+            buyPrice:0,
+            quality: "common",
+            type: "material",
+            slot:"",
+            class: "",
+            skill: "",
+            add: "{}",
+            remove: "{}",
+            craft: "{}"
+        },
+        {
+            name:"Sword",
+            sellPrice:20,
+            buyPrice:10,
+            quality: "common",
+            type: "equipment",
+            slot:"weapon",
+            class: "warrior",
+            skill: "1",
+            add: '{"damage":3, "health_max":20}',
+            remove: '{"armor":2}',
+            craft: '{"1": 4}'
+        }
+    ]
 
     const newWB = xlsx.utils.book_new()
     const newData = xlsx.utils.json_to_sheet(data)
@@ -36,6 +64,8 @@ class Item {
         this.quality = data.quality
         this.type = data.type
         if (data.type === 'equipment') {
+            this.class = data.class
+            this.skill = data.skill
             this.slot = data.slot
             this.add = JSON.parse(data.add)
             this.remove = JSON.parse(data.remove)
@@ -156,9 +186,17 @@ for (const _item of items) {
             const err = new Error(`Invalid item slot. line: ${item.id+1}`)
             throw err;
         }
+        if (!item.class || !['warrior', 'magician', 'tank', 'mechanic', 'trainer'].includes(item.class) ) {
+            const err = new Error(`Invalid item class. line: ${item.id+1}`)
+            throw err;
+        }
+        if (!item.skill || !Skills.GetSkillWithID(item.skill) ) {
+            const err = new Error(`Invalid Item skill id. line: ${item.id+1}`)
+            throw err;
+        }
         if (item.add) {
             for (const key in item.add) {
-                if (!['health_max', 'damage', 'armor'].includes(key)) {
+                if (!['health_max', 'armor'].includes(key)) {
                     const err = new Error(`Invalid item add stat ${key}. line: ${item.id+1}`)
                     throw err;
                 }
@@ -172,7 +210,7 @@ for (const _item of items) {
         }
         if (item.remove) {
             for (const key in item.remove) {
-                if (!['health_max', 'damage', 'armor'].includes(key)) {
+                if (!['health_max', 'armor'].includes(key)) {
                     const err = new Error(`Invalid item add stat ${key}. line: ${item.id+1}`)
                     throw err;
                 }
