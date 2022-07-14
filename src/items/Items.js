@@ -30,7 +30,7 @@ if(!fs.existsSync('./discord-dungeon/items.xlsx')) {
             slot:"weapon",
             class: "warrior",
             skill: "1",
-            add: '{"damage":3, "health_max":20}',
+            add: '{"health_max":20}',
             remove: '{"armor":2}',
             craft: '{"1": 4}'
         }

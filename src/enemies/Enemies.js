@@ -16,6 +16,7 @@ if(!fs.existsSync('./discord-dungeon/enemies.xlsx')) {
             damage:1,
             armor: 0,
             money:25,
+            xp: 30,
             rarity: "common",
             drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'
         },
@@ -27,6 +28,7 @@ if(!fs.existsSync('./discord-dungeon/enemies.xlsx')) {
             damage:1,
             armor: 0,
             money:"25,60",
+            xp: "50,100",
             rarity: "common",
             drop: '{"100": {"1": "4,8"}, "50": {"2": "1,3"}}'
         }

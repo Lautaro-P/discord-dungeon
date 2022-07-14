@@ -43,6 +43,8 @@ class Skill {
         this.id = data.id
         this.name = data.name
         this.damage = data.damage
+        this.type = data.type
+        this.class = data.class
         this.animation = data.animation
         this.frames = data.frames
         this.effect = data.effect
