@@ -30,7 +30,7 @@ const ws = wb.Sheets["Skills"]
 
 let data = xlsx.utils.sheet_to_json(ws)
 
-const skills = data.map((_enemy, i) => {
+const skills = data.map((_skill, i) => {
     let skill = _skill
     skill.id = i+1
     return skill
