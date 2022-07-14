@@ -99,7 +99,7 @@ for (const _skill of skills) {
             throw err;
         }
     }
-    if (!skill.type || ["attack", "defend"].includes(skill.type)) {
+    if (!skill.type || !["attack", "defend"].includes(skill.type)) {
         const err = new Error(`Invalid skill type. line: ${skill.id+1}`)
         throw err;
     }
